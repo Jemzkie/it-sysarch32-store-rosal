@@ -1,0 +1,415 @@
+@font-face {
+  font-family: "Raleway";
+  src: url("./font/Raleway-VariableFont_wght.ttf") format("truetype");
+}
+
+body,
+html {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+/*Header Classes*/
+
+header {
+  width: 100%;
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px dashed black;
+}
+
+header ul {
+  display: flex;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+header ul li > * {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+}
+
+.hamburger {
+  display: none;
+}
+
+@media only screen and (max-width: 1320px) {
+  header {
+    padding: 0 50px;
+  }
+}
+
+@media only screen and (max-width: 1110px) {
+  header {
+    padding: 0 30px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .hamburger {
+    position: absolute;
+    top: 12px;
+    right: 30px;
+    display: block;
+    cursor: pointer;
+  }
+
+  .hamburger .line {
+    width: 30px;
+    height: 3px;
+    background: black;
+    margin: 6px 0;
+  }
+
+  .nav-bar {
+    position: absolute;
+    height: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #282828;
+    transition: 0.5s;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .nav-bar.active {
+    position: absolute;
+    margin-top: 10vh;
+    height: 200px;
+    z-index: 5;
+    border-radius: 0 0 1px 10px;
+  }
+
+  .nav-bar ul {
+    display: block;
+    width: fit-content;
+    margin: 80px auto 0 auto;
+    text-align: center;
+    transition: 0.5s;
+    opacity: 0;
+  }
+
+  .nav-bar.active ul {
+    opacity: 1;
+  }
+
+  .nav-bar ul li a {
+    margin-bottom: 12px;
+  }
+}
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/*Product Screen Classes*/
+
+/*1st Layer*/
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+}
+
+.wrapper > * {
+  padding: 5px;
+  margin: 10px;
+  flex: 1 100%;
+}
+
+.side {
+  height: 70vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.select-main {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  margin-left: 100px;
+  margin-right: 100px;
+  border-radius: 20px;
+}
+
+.select-side {
+  padding-top: 50px;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+}
+
+.btn-paymongo {
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  background-color: #282828;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-paymongo:hover {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+}
+
+.child-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 225px;
+  height: 225px;
+  gap: 10px;
+  border: 1px solid black;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/shirtprev.png");
+  background-size: cover;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.child-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 225px;
+  height: 225px;
+  gap: 10px;
+  border: 1px solid black;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/accessories.jpg");
+  background-size: cover;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.child-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 225px;
+  height: 225px;
+  border: 1px solid black;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/arr.jpg");
+  background-size: cover;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.child-4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 225px;
+  height: 225px;
+  border: 1px solid black;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/sale.jpg");
+  background-size: cover;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.main {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+  gap: 20px;
+  position: relative;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/genshinmerch.png");
+  background-size: cover;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+button {
+  width: 40%;
+  height: 45px;
+  background-color: transparent;
+  transition: 1s ease;
+  border: 1px white solid;
+  border-radius: 5px;
+  color: white;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+}
+
+/*2nd Layer*/
+.product-header {
+  height: 60px;
+  padding: 20px;
+}
+.products-layer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  padding: 40px 0 40px;
+  gap: 20px;
+}
+
+.product-cards {
+  width: 300px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  gap: 3px;
+  transition: 0.5s ease;
+}
+
+.product-cards:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: scale-down;
+}
+
+.detail-image {
+  height: 60vh;
+}
+
+@media all and (min-width: 800px) {
+  .main,
+  .select-main {
+    flex: 1;
+  }
+
+  .main,
+  .select-main {
+    order: 1;
+  }
+
+  .side,
+  .select-side {
+    order: 2;
+  }
+}
+
+@media all and (min-width: 600px) {
+  .side,
+  .select-side {
+    flex: 1;
+  }
+}
+
+/*Utility Classes*/
+
+.raleway-font {
+  font-family: "Raleway", sans-serif;
+}
+
+.font-big {
+  font-size: 40px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.font-thin {
+  font-weight: 400;
+}
+
+.font-logo {
+  font-size: 24px;
+}
+
+.font-small {
+  font-size: 14px;
+}
+
+.text-black {
+  color: black;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-gray {
+  color: gray;
+}
+
+.mt-5 {
+  margin-top: 50px;
+}
+
+.mt-3 {
+  margin-top: 30px;
+}
+
+.mt-sm-5 {
+  margin-top: 5px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.ms-5 {
+  margin-left: 50px;
+}
+
+.me-5 {
+  margin-right: 50px;
+}
+
+.me-lg-5 {
+  margin-right: 150px;
+}
+
+.debug {
+  border: 1px solid red;
+}
