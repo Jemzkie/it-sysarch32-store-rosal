@@ -5,10 +5,16 @@ import { db } from "../config/firebase-config";
 import StarRating from "../components/Ratings";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51PEvNOEoCKfVp71pGchlLLSILQp5clDkfWmBfoh0mvVdoyBfGM6x6AWyd2EchcTruN343g3RrkhPe4MeyLCsyHPj00KmIPxHxC'); // Replace with your publishable key
 
 function ProductDetails() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [productName, setProductName] = useState('');
+  const [price, setPrice] = useState(1000); // Default price is $10.00
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,54 +33,46 @@ function ProductDetails() {
     fetchProduct();
   }, [productId]);
 
-  const handleBuyNowClick = (e) => {
-    e.preventDefault();
-    const amount = product.Price * 100;
-    const redirectUrl = window.location.href;
-
-    const options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        authorization: "Basic c2tfdGVzdF96RVM1WEszb1A1clplb0M0ckJOQVlnMmc6",
-      },
-      body: JSON.stringify({
-        data: {
-          attributes: {
-            send_email_receipt: true,
-            show_description: true,
-            show_line_items: true,
-            line_items: [
-              {
-                currency: "PHP",
-                amount: amount,
-                description: `${product.Name}`,
-                name: `${product.Description}`,
-                quantity: 1,
-              },
-            ],
-            payment_method_types: ["gcash"],
-            success_url: redirectUrl,
-            description: "Pay",
-          },
+    // Handle the click event when the user clicks the "Checkout" button
+    const handleClick = async () => {
+      const stripe = await stripePromise;
+  
+      // Send a request to the backend to create a checkout session
+      const response = await fetch('http://localhost:4000/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      }),
-    };
-
-    fetch("https://api.paymongo.com/v1/checkout_sessions", options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        body: JSON.stringify({ productName, price }), // Send product name and price to the backend
+      });
+  
+      if (response.ok) {
+        // If the request is successful, retrieve the session ID from the response
+        const session = await response.json();
+  
+        // Redirect the user to the Stripe Checkout page using the session ID
+        const result = await stripe.redirectToCheckout({ sessionId: session.id });
+  
+        if (result.error) {
+          // If there is an error during the redirect, display the error message
+          setError(result.error.message);
         }
-        return response.json();
-      })
-      .then((data) => {
-        const checkoutUrl = data.data.attributes.checkout_url;
-        window.location.href = checkoutUrl;
-      })
-      .catch((err) => console.error(err));
-  };
+      } else {
+        // If there is an error creating the checkout session, display an error message
+        setError('Error creating checkout session');
+      }
+    };
+  
+    // Handle the change event when the user enters a product name
+    const handleProductNameChange = (event) => {
+      setProductName(event.target.value);
+    };
+  
+    // Handle the change event when the user enters a price
+    const handlePriceChange = (event) => {
+      setPrice(event.target.value * 100); // Convert price to cents for Stripe
+    };
+    
 
   if (!product) {
     return <Loading />;
@@ -94,26 +92,24 @@ function ProductDetails() {
           </div>
         </div>
         <div className="select-side">
-          <label className="raleway-font font-bold font-logo text-dark">
+          <div className="raleway-font font-bold font-logo text-dark">
             {product.Name}
-          </label>
+          </div>
           <label className="raleway-font font-bold font-small text-dark">
             {product.Description}
           </label>
-          <label className="raleway-font font-small text-dark">
+          <div className="raleway-font font-small text-dark">
             ₱{product.Price}
-          </label>
+          </div>
           <label className="raleway-font font-small text-gray">
             <StarRating rating={product.Rating} />
           </label>
           <label className="raleway-font font-small text-gray">
             {product.Address}
           </label>
-          <form className="mt-5" onSubmit={handleBuyNowClick}>
-            <button className="btn-paymongo" type="submit">
+            <button onClick={handleClick} className="btn-paymongo">
               Buy Now
             </button>
-          </form>
         </div>
       </div>
     </>
